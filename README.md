@@ -1,1 +1,27 @@
 # DBMS-Project
+
+## CONTRIBUTORS
+    ALEXANDROS MANTZAFINIS
+
+## REQUIREMENTS
+    1.MySQL Workbench
+    2.HeidiSQL
+    
+## ER-DIAGRAM
+
+[ER-DIAGRAM.pdf](https://github.com/AlexandrosMantzafinis/DBMS-Project/files/8840375/ER-DIAGRAM.pdf)
+
+
+## RELATIONAL MODEL
+
+![RM_PNG](https://user-images.githubusercontent.com/94281093/172061659-e9f1e0c4-a4e5-4b9a-bf53-de946bac5152.png)
+
+
+## INSTALATION
+     1.Install HeidiSQL from MariaDB if you have not already. Download link
+     https://mariadb.org/download/?t=mariadb&p=mariadb&r=10.6.8&os=windows&cpu=x86_64&pkg=msi&m=crete
+     2.Connect to the server
+## RUN THE FOLLOWING IN THE SQL SCRIPT FROM THE MAIN BRANCH:
+    1.CREATE_DB AND TABLES
+    2.DATA_INSERTION
+    3.CREATE_VIEWS

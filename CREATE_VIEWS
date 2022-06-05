@@ -1,0 +1,24 @@
+-- QUERY 2
+
+
+CREATE or REPLACE VIEW project_per_researcher AS
+SELECT 
+researcher.researcher_id,
+researcher.res_firstname,
+researcher.res_lastname,
+project_funding.project_title
+FROM researcher
+INNER JOIN researcherworksonproject ON researcher.researcher_id = researcherworksonproject.researcher_id
+INNER JOIN project_funding ON researcherworksonproject.project_id = project_funding.project_id
+ORDER BY researcher.researcher_id
+
+
+-- 2ND VIEW
+-- THIS VIEW DISPLAYS IN ALPHABETICAL ORDER THE TELEPHONES EACH ORGANIZATION HAS
+
+CREATE OR REPLACE VIEW org_telephone_list AS
+SELECT organization.org_name, telephone_list.tel_number
+FROM organization
+INNER JOIN telephone_list ON organization.org_id = telephone_list.org_id
+GROUP BY telephone_list.tel_number
+ORDER BY organization.org_name

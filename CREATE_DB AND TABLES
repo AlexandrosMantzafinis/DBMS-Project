@@ -1,0 +1,157 @@
+-- creation of the database
+CREATE DATABASE project_management;
+USE project_management;
+
+-- creation of entities
+
+CREATE TABLE telephone_list(
+	tel_number VARCHAR(10) PRIMARY KEY,
+	org_id INT 
+);
+
+CREATE TABLE organization(
+		org_id INT PRIMARY KEY, -- abbreviation
+		org_name VARCHAR(20) NOT NULL, 
+		org_abbr VARCHAR(10),
+		-- tel_number INT, FOREIGN KEY (tel_number) REFERENCES telephone_list(tel_number),
+		postal_code INT,
+		city VARCHAR(30),
+		street_number INT
+);
+
+CREATE TABLE researcher(
+	researcher_id INT PRIMARY KEY,
+	res_firstname VARCHAR(20) NOT NULL,
+	res_lastname VARCHAR(20) NOT NULL,
+	sex VARCHAR(7) NOT NULL,
+	birthdate DATE NOT NULL
+);
+
+CREATE TABLE project_funding (
+	project_id INT PRIMARY KEY, 
+	project_title VARCHAR(20) NOT NULL,
+	start_date DATE NOT NULL,
+	end_date DATE NOT NULL,
+	project_fund INT,
+	project_descr VARCHAR(100),
+	head_researcher_id INT, FOREIGN KEY (head_researcher_id) REFERENCES researcher(researcher_id),
+	org_id int, FOREIGN KEY (org_id) REFERENCES organization(org_id),
+	duration INT,
+	active BOOL,
+	submission_id INT
+	);
+	
+
+
+
+CREATE TABLE evaluation(
+	evaluation_id INT PRIMARY KEY,
+	project_id INT, FOREIGN KEY (project_id) REFERENCES project_funding(project_id),
+	researcher_id INT, FOREIGN KEY (researcher_id) REFERENCES researcher(researcher_id),
+	grade INT NOT NULL,
+	ev_date DATE NOT NULL,
+	UNIQUE(project_id)
+);
+
+CREATE TABLE company(
+	company_id INT PRIMARY KEY,
+	funds INT NOT NULL
+);
+
+CREATE TABLE university(
+	university_id INT PRIMARY KEY,
+	funds INT NOT NULL
+);
+
+CREATE TABLE research_centre(
+	research_centre_id INT PRIMARY KEY,
+	funds INT NOT NULL
+);
+
+CREATE TABLE ISA(
+	isa_id INT PRIMARY KEY,
+	org_id INT, FOREIGN KEY (org_id) REFERENCES organization(org_id),
+	university_id INT, FOREIGN KEY (university_id) REFERENCES university(university_id),
+	company_id INT, FOREIGN KEY (company_id) REFERENCES company(company_id),
+	research_centre_id INT, FOREIGN KEY (research_centre_id) REFERENCES research_centre(research_centre_id)
+);
+
+CREATE TABLE scientific_field(
+	scientific_field_name1 VARCHAR(30) PRIMARY KEY
+	
+);
+
+CREATE TABLE elidek(
+	elidek_id INT PRIMARY KEY,
+	elidek_name VARCHAR(30)
+);
+
+CREATE TABLE executive(
+	executive_id INT PRIMARY KEY,
+	executive_name VARCHAR(20) NOT NULL,
+	elidek_id INT, FOREIGN KEY (elidek_id) REFERENCES elidek(elidek_id)
+);
+
+CREATE TABLE elidek_funding(
+	funding_id INT PRIMARY KEY,
+	funding_name VARCHAR(20) NOT NULL,
+	elidek_id INT NOT NULL,
+	funds INT NOT NULL, 
+	FOREIGN KEY (elidek_id) REFERENCES elidek(elidek_id),
+	executive_id INT ,FOREIGN KEY (executive_id) REFERENCES executive(executive_id)
+);
+
+CREATE TABLE submission(
+	submission_id INT PRIMARY KEY,
+	submission_desc VARCHAR(100),
+	submission_title VARCHAR(20) NOT NULL,
+	submission_date DATE NOT NULL
+);
+
+ALTER TABLE project_funding
+ADD FOREIGN KEY (submission_id) REFERENCES submission(submission_id);
+
+ALTER TABLE telephone_list
+ADD FOREIGN KEY (org_id) REFERENCES organization(org_id);
+
+
+-- CREATE TABLE organization_project(
+--	organization_project_id INT PRIMARY KEY,
+--	project_id INT, FOREIGN KEY (project_id) REFERENCES project_funding(project_id),
+--	organization_id VARCHAR(10), FOREIGN KEY (organization_id) REFERENCES organization(org_abbr),
+--	UNIQUE(project_id)
+-- );
+
+CREATE TABLE executive_project(
+	executive_project_id INT PRIMARY KEY,
+	executive_id INT, FOREIGN KEY (executive_id) REFERENCES executive(executive_id),
+	project_id INT, FOREIGN KEY (project_id) REFERENCES project_funding(project_id)
+);
+
+CREATE TABLE scientificfield_project(
+	scientificfield_project_id INT PRIMARY KEY,
+	project_id INT, FOREIGN KEY (project_id) REFERENCES project_funding(project_id),
+	scientific_field_name1 VARCHAR(30), FOREIGN KEY (scientific_field_name1) REFERENCES scientific_field(scientific_field_name1),
+	scientific_field_name2 VARCHAR(30), FOREIGN KEY (scientific_field_name2) REFERENCES scientific_field(scientific_field_name1)
+);
+
+CREATE TABLE project_elidekfunding(
+	project_elidekfunding_id INT PRIMARY KEY,
+	project_id INT, FOREIGN KEY (project_id) REFERENCES project_funding(project_id),
+	funding_id INT, FOREIGN KEY (funding_id) REFERENCES elidek_funding(funding_id),
+	UNIQUE(project_id)
+);
+
+CREATE TABLE ResearcherWorksOnProject(
+	ResearcherWorksOnProject_id INT PRIMARY KEY,
+	project_id INT, FOREIGN KEY (project_id) REFERENCES project_funding(project_id),	
+	researcher_id INT, FOREIGN KEY (researcher_id) REFERENCES researcher(researcher_id),
+	start_date date
+);
+
+CREATE TABLE researcherworkswithorg(
+	researcherworkswithorg_id INT PRIMARY KEY,	
+	researcher_id INT, FOREIGN KEY (researcher_id) REFERENCES researcher(researcher_id),
+	organization_id  INT, FOREIGN KEY (organization_id) REFERENCES organization(org_id),
+	UNIQUE(researcher_id)
+);

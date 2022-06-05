@@ -9,7 +9,7 @@
     
 ## ER-DIAGRAM
 
-[ER-DIAGRAM.pdf](https://github.com/AlexandrosMantzafinis/DBMS-Project/files/8840375/ER-DIAGRAM.pdf)
+![ERD_PNG](https://user-images.githubusercontent.com/94281093/172062635-d1064701-28e1-4316-b616-94ee4b78e11b.png)
 
 
 ## RELATIONAL MODEL

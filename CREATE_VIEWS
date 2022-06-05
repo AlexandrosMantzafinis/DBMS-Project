@@ -1,5 +1,6 @@
 -- QUERY 2
 
+-- 1ST VIEW
 
 CREATE or REPLACE VIEW project_per_researcher AS
 SELECT 

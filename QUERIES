@@ -1,0 +1,88 @@
+-- QUERY 1
+
+SELECT project_funding.project_id, project_funding.start_date, res_firstname, res_lastname  -- , project_funding.duration
+FROM project_funding
+INNER JOIN executive_project ON project_funding.project_id = executive_project.project_id
+INNER JOIN researcherworksonproject ON project_funding.project_id = researcherworksonproject.project_id
+INNER JOIN researcher ON researcherworksonproject.researcher_id = researcher.researcher_id
+-- WHERE executive.executive_name = ' ' AND project_funding.start_date = ' ' AND project_funding.duration = ' ';
+
+-- QUERY 3
+
+	SELECT 
+	project_funding.project_title,
+	researcher.res_firstname,
+	researcher.res_lastname
+	FROM scientificfield_project
+	INNER JOIN project_funding ON scientificfield_project.project_id = project_funding.project_id
+	INNER JOIN researcherworksonproject ON project_funding.project_id = researcherworksonproject.project_id
+	INNER JOIN researcher ON researcherworksonproject.researcher_id = researcher.researcher_id
+	WHERE (project_funding.active = TRUE) AND (YEAR(CURDATE()) - YEAR(researcherworksonproject.start_date) <= 1)
+  
+  -- QUERY 4
+  
+  SELECT organization.org_id, organization.org_name, COUNT(project_funding.org_id)
+	FROM organization
+	INNER JOIN project_funding ON organization.org_id = project_funding.org_id
+	GROUP BY organization.org_id
+	HAVING COUNT(project_funding.org_id)>=20
+  
+  -- QUERY 5 NOT COMPLETED
+  
+ 
+-- 1ST TRY 
+SELECT
+scientificfield_project.scientific_field_name1, scientificfield_project.scientific_field_name2, count( scientificfield_project.scientific_field_name1)
+FROM scientificfield_project
+WHERE scientific_field_name2 IS NOT NULL
+-- WHERE(scientific_field_name2 IS NOT NULL) AND (((scientificfield_project.scientific_field_name1 = scientificfield_project.scientific_field_name1) AND (scientificfield_project.scientific_field_name2 = scientificfield_project.scientific_field_name2)) OR((scientificfield_project.scientific_field_name1 = scientificfield_project.scientific_field_name2) AND (scientificfield_project.scientific_field_name2 = scientificfield_project.scientific_field_name1)))
+GROUP BY scientific_field_name1
+ORDER BY COUNT(*) DESC
+LIMIT 3;
+
+-- 2ND TRY
+
+
+SELECT scientificfield_project.scientific_field_name2 , scientificfield_project.scientific_field_name1 , count( scientificfield_project.scientific_field_name2)
+FROM scientificfield_project
+WHERE scientific_field_name2 IS NOT NULL
+GROUP BY scientific_field_name2
+ORDER BY COUNT(*) DESC
+LIMIT 3;
+
+-- QUERY 6
+
+SELECT 
+researcher.researcher_id, researcher.res_firstname, researcher.res_lastname, COUNT(researcherworksonproject.researcher_id) AS NUMBER_of_projects
+FROM researcher
+INNER JOIN researcherworksonproject ON researcher.researcher_id = researcherworksonproject.researcher_id
+INNER JOIN project_funding ON researcherworksonproject.project_id = project_funding.project_id
+WHERE (YEAR(CURDATE())-YEAR(birthdate)) <40 AND project_funding.active = TRUE
+GROUP BY researcher.researcher_id
+ORDER BY COUNT(*) DESC;
+
+-- QUERY 7
+
+SELECT
+executive.executive_name, elidek.elidek_name, SUM(elidek_funding.funds) AS total_funds
+FROM executive
+INNER JOIN elidek ON executive.elidek_id = elidek.elidek_id
+INNER JOIN elidek_funding ON executive.executive_id = elidek_funding.executive_id
+GROUP BY elidek_funding.executive_id
+ORDER BY total_funds DESC
+LIMIT 5;
+
+
+-- QUERY 8
+
+
+SELECT 
+researcher.researcher_id, researcher.res_firstname, researcher.res_lastname, COUNT(researcherworksonproject.project_id) AS NUMBER_OF_PROJECTS
+FROM researcher
+INNER JOIN researcherworksonproject ON researcher.researcher_id = researcherworksonproject.researcher_id
+INNER JOIN project_funding ON researcherworksonproject.project_id = project_funding.project_id
+WHERE (project_funding.submission_id IS NULL) AND (project_funding.active = TRUE)
+GROUP BY researcher.researcher_id
+HAVING (COUNT(researcherworksonproject.project_id) >= 5)
+ORDER BY COUNT(researcherworksonproject.researcher_id) DESC
+  

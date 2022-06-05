@@ -17,7 +17,7 @@
 ![RM_PNG](https://user-images.githubusercontent.com/94281093/172061659-e9f1e0c4-a4e5-4b9a-bf53-de946bac5152.png)
 
 
-## INSTALATION
+## INSTALLATION
      1.Install HeidiSQL from MariaDB if you have not already. Download link
      https://mariadb.org/download/?t=mariadb&p=mariadb&r=10.6.8&os=windows&cpu=x86_64&pkg=msi&m=crete
      2.Connect to the server
